@@ -13,9 +13,19 @@ Duplicate `.env.example` and rename it `.env`
 
 Setup database in `.env`
 
+```txt
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+```
+
 ### Database Migrations
 
-Create and feels your tables
+Create and feel your tables
+
 
 ```bash
 php artisan migrate
