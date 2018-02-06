@@ -24,15 +24,6 @@ class ChatsController extends Controller
      */
     public function index()
     {
-
-       // $user = User::find(1);
-       // $user->assignRole('writer');
-
-        //return User::role('writer')->get();
-
-
-        //return '<div style="background-color:'.$color.';">'.$color.'</div>';
-
         return view('chat');
     }
 

@@ -24,7 +24,7 @@
                     <div class="panel-heading">Users</div>
 
                     <div class="panel-body">
-                       <chat-users> </chat-users>
+                       <chat-users></chat-users>
                     </div>
 
                 </div>

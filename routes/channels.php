@@ -17,10 +17,5 @@ Broadcast::channel('chat', function ($user) {
 
 Broadcast::channel('userList', function ($user) {
 
-    if(!Auth::check()) return false;
-
-    return [
-        'id' => $user->id,
-        'name' => $user->name,
-    ];
+    return Auth::user();
 });
