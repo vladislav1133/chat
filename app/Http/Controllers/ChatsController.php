@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class ChatsController extends Controller
 {
@@ -21,6 +24,15 @@ class ChatsController extends Controller
      */
     public function index()
     {
+
+       // $user = User::find(1);
+       // $user->assignRole('writer');
+
+        //return User::role('writer')->get();
+
+
+        //return '<div style="background-color:'.$color.';">'.$color.'</div>';
+
         return view('chat');
     }
 

@@ -14,3 +14,13 @@
 Broadcast::channel('chat', function ($user) {
     return Auth::check();
 });
+
+Broadcast::channel('counter', function ($user) {
+
+    if(!Auth::check()) return false;
+
+    return [
+        'id' => $user->id,
+        'name' => $user->name,
+    ];
+});
