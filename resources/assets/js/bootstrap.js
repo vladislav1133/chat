@@ -3,6 +3,9 @@ import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import Vue from 'vue'
 
+window.$ = window.jQuery = require('jquery');
+require('bootstrap-sass');
+
 window.Vue = Vue
 window.axios = axios
 

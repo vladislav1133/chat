@@ -18,7 +18,7 @@
         },
         methods: {
             listen() {
-                Echo.join('counter')
+                Echo.join('userList')
                     .here(users => this.count = users.length)
                     .joining(user => this.count++)
                     .leaving(user => this.count--);

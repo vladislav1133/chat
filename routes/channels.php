@@ -15,7 +15,7 @@ Broadcast::channel('chat', function ($user) {
     return Auth::check();
 });
 
-Broadcast::channel('counter', function ($user) {
+Broadcast::channel('userList', function ($user) {
 
     if(!Auth::check()) return false;
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\ColorGenerateService;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@chat.test',
             'name' => 'admin',
             'password' => bcrypt('12345678'),
-            'color' => \App\Services\ColorGenerateService::getHex()
+            'color' => ColorGenerateService::getHex()
         ]);
 
         $user->assignRole('admin');
