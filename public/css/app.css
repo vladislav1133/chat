@@ -8387,3 +8387,21 @@ button.close {
   background-color: #555;
 }
 
+.flash {
+  width: 100%;
+  padding: 15px;
+  border-radius: 2px;
+}
+
+.flash__success {
+  background: #a5d6a7;
+  border: 1px solid #81c784;
+  color: #1b5e20;
+}
+
+.flash__error {
+  background: #ef9a9a;
+  border: 1px solid #e57373;
+  color: #b71c1c;
+}
+

@@ -1077,21 +1077,27 @@ module.exports = __webpack_require__(48);
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 __webpack_require__(12);
 
 Vue.component('chat-messages', __webpack_require__(39));
 Vue.component('chat-form', __webpack_require__(42));
 Vue.component('chat-users', __webpack_require__(45));
+Vue.component('chat-notification', __webpack_require__(60));
 
 var app = new Vue({
     el: '#app',
 
-    data: {
-        messages: []
-    },
+    data: function data() {
 
+        return {
+            messages: [],
+            success: null,
+            error: null
+        };
+    },
     created: function created() {
         var _this = this;
 
@@ -1114,10 +1120,36 @@ var app = new Vue({
                 _this2.messages = response.data;
             });
         },
-        addMessage: function addMessage(message) {
-            this.messages.push(message);
+        showNotification: function showNotification(text, time) {
+            var _this3 = this;
 
-            axios.post('/messages', message).then(function (response) {});
+            var success = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+
+            if (success) {
+                this.success = text;
+                setTimeout(function () {
+                    _this3.success = null;
+                }, time);
+            } else {
+                this.error = text;
+                setTimeout(function () {
+                    _this3.error = null;
+                }, time);
+            }
+        },
+        addMessage: function addMessage(message) {
+            var _this4 = this;
+
+            axios.post('/messages', message).then(function (response) {
+
+                console.log(response);
+
+                if (response.data.status === 200) _this4.messages.push(message);else {
+                    console.log(response.data.error);
+                    _this4.showNotification(response.data.error, 5000, false);
+                }
+            });
         }
     }
 });
@@ -31312,6 +31344,119 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(61)
+/* template */
+var __vue_template__ = __webpack_require__(62)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ChatNotification.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4082a5cc", Component.options)
+  } else {
+    hotAPI.reload("data-v-4082a5cc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['error', 'success']
+});
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.success
+      ? _c("div", { staticClass: "flash flash__success" }, [
+          _vm._v("\n        " + _vm._s(_vm.success) + "\n    ")
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.error
+      ? _c("div", { staticClass: "flash flash__error" }, [
+          _vm._v("\n        " + _vm._s(_vm.error) + "\n    ")
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4082a5cc", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -3,13 +3,21 @@ require('./bootstrap')
 Vue.component('chat-messages', require('./components/ChatMessages.vue'))
 Vue.component('chat-form', require('./components/ChatForm.vue'))
 Vue.component('chat-users', require('./components/ChatUsers.vue'))
+Vue.component('chat-notification', require('./components/ChatNotification.vue'))
 
 const app = new Vue({
     el: '#app',
 
-    data: {
-        messages: []
+    data(){
+
+       return {
+           messages: [],
+           success: null,
+           error: null,
+        }
     },
+
+
 
     created() {
         this.fetchMessages()
@@ -31,10 +39,33 @@ const app = new Vue({
             })
         },
 
-        addMessage(message){
-            this.messages.push(message)
+        showNotification(text, time, success = true) {
 
-            axios.post('/messages', message).then(response => {})
+            if(success){
+                this.success = text
+                setTimeout(() => {
+                    this.success = null
+                },time)
+
+            } else {
+                this.error = text
+                setTimeout(() => {
+                    this.error = null
+                },time)
+            }
+        },
+        addMessage(message){
+
+            axios.post('/messages', message).then(response => {
+
+                console.log(response)
+
+                if (response.data.status === 200) this.messages.push(message)
+                else {
+                    console.log(response.data.error)
+                    this.showNotification(response.data.error,5000,false)
+                }
+            })
         }
     }
 });

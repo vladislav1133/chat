@@ -5,9 +5,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-2">
+                <chat-notification :success="success" :error="error"></chat-notification>
                 <div class="panel panel-default">
                     <div class="panel-heading">Chat</div>
-
                     <div class="panel-body">
                         <chat-messages :messages="messages"></chat-messages>
                     </div>
