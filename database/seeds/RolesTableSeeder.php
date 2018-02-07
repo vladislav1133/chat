@@ -15,19 +15,27 @@ class RolesTableSeeder extends Seeder
     {
         app()['cache']->forget('spatie.permission.cache');
 
-
+        config(['permission.cache_expiration_time' => '0']);
 
         Permission::create(['name' => 'ban user']);
         Permission::create(['name' => 'mute user']);
+
         $adminRole = Role::create(['name' => 'admin']);
         $adminRole->givePermissionTo('ban user');
         $adminRole->givePermissionTo('mute user');
 
         Permission::create(['name' => 'can watch']);
         Permission::create(['name' => 'can write']);
-        $useRole = Role::create(['name' => 'user']);
-        $useRole->givePermissionTo('can write');
-        $useRole->givePermissionTo('can watch');
+
+        $userRole = Role::create(['name' => 'user']);
+        $userRole->givePermissionTo('can write');
+        $userRole->givePermissionTo('can watch');
+
+        $watcherRole = Role::create(['name' => 'watcher']);
+        $watcherRole->givePermissionTo('can watch');
+
+        $blockedUser = Role::create(['name' => 'blockedUser']);
+
 
     }
 }
