@@ -8405,3 +8405,39 @@ button.close {
   color: #b71c1c;
 }
 
+.user-list__btn {
+  padding: 0 8px;
+  margin: 0 2px;
+  color: #fff;
+  -webkit-transition: .3s background-color ease;
+  transition: .3s background-color ease;
+}
+
+.user-list__btn:hover,
+.user-list__btn:focus {
+  color: #fff;
+}
+
+.user-list__btn_mute {
+  background-color: royalblue;
+}
+
+.user-list__btn_mute:hover,
+.user-list__btn_mute:focus {
+  background-color: #6485e7;
+}
+
+.user-list__btn_ban,
+.user-list__btn:focus {
+  background-color: darkred;
+}
+
+.user-list__btn_ban:hover,
+.user-list__btn:focus:hover {
+  background-color: #d80000;
+}
+
+.user-list__item {
+  white-space: nowrap;
+}
+

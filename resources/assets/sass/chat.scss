@@ -51,3 +51,37 @@
     color: #b71c1c;
   }
 }
+
+
+.user-list {
+
+
+  &__btn {
+    padding: 0 8px;
+    margin: 0 2px;
+    color: #fff;
+    transition: .3s background-color ease;
+
+    &:hover, &:focus {
+      color: #fff;
+    }
+    &_mute {
+      background-color: royalblue;
+
+      &:hover, &:focus {
+        background-color: lighten(royalblue, 8%);
+      }
+    }
+
+    &_ban, &:focus {
+      background-color: darkred;
+      &:hover {
+        background-color: lighten(darkred, 15%);
+      }
+    }
+  }
+
+  &__item {
+    white-space: nowrap;
+  }
+}

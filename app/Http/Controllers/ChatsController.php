@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Http\Requests\MessageRequest;
 use App\Message;
-use App\Services\ChatRuleValidator;
-use App\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+
+use App\Services\ChatService;
 
 class ChatsController extends Controller
 {
-    private $chatRuleValidator;
-    public function __construct(ChatRuleValidator $chatRuleValidator)
+
+    public function __construct()
     {
         $this->middleware('auth');
-        $this->chatRuleValidator = $chatRuleValidator;
+
     }
 
     /**
@@ -50,18 +49,12 @@ class ChatsController extends Controller
      * @param Request $request
      * @return array
      */
-    public function sendMessage(Request $request)
+    public function sendMessage(MessageRequest $request)
     {
 
         $user = Auth::user();
 
-        $errors = $this->chatRuleValidator->validate($user,$request['message']);
-        if (count($errors)) return response()->json(['status' => 400, 'error' => $errors[0]]);
-
-
-        $message = $user->messages()->create([
-            'message' => $request->input('message')
-        ]);
+        $message = ChatService::save($request,$user);
 
         broadcast(new MessageSent($user, $message))->toOthers();
 

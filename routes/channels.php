@@ -17,5 +17,7 @@ Broadcast::channel('chat', function ($user) {
 
 Broadcast::channel('userList', function ($user) {
 
-    return Auth::user();
+
+    $user->isAdmin = $user->hasRole('admin');
+    return $user;
 });
