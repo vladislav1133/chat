@@ -70,7 +70,8 @@ class RegisterController extends Controller
             'color' => ColorGenerateService::getHex()
         ]);
 
-        $user->assignRole('user');
+       // $user->givePermissionTo('visit page');
+       // $user->givePermissionTo('write message');
 
         return $user;
     }

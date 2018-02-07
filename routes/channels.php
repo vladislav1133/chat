@@ -12,12 +12,14 @@
 */
 
 Broadcast::channel('chat', function ($user) {
+
+
     return Auth::check();
 });
 
 Broadcast::channel('userList', function ($user) {
 
-
+    $user->role = $user->getRoleNames();
     $user->isAdmin = $user->hasRole('admin');
     return $user;
 });

@@ -3,10 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\User;
-use Auth;
 
-class AdminMiddleware
+class VisitorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,15 +15,10 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $user = User::all()->count();
+        $user = Auth::user();
 
-        if (!($user == 1)) {
+        if ($user->hasRole('admin') || $user->hasPermissionTo('visit page'))  return $next($request);
 
-           if(!Auth::user()->hasRole('admin')){
-
-               abort(401);
-           }
-        }
-        return $next($request);
+        return redirect('/login');
     }
 }

@@ -31348,50 +31348,42 @@ var render = function() {
     "ul",
     { staticClass: "user-list" },
     _vm._l(_vm.users, function(user) {
-      return _vm.isAdmin
-        ? _c("li", { staticClass: "user-list__item dropdown" }, [
-            !user.isAdmin
-              ? _c(
-                  "a",
-                  {
-                    staticClass: "dropdown-toggle",
-                    style: { color: user.color },
-                    attrs: {
-                      href: "#",
-                      "data-toggle": "dropdown",
-                      role: "button",
-                      "aria-expanded": "false",
-                      "aria-haspopup": "true"
-                    }
-                  },
-                  [
-                    _vm._v("\n            " + _vm._s(user.name) + " "),
-                    _c("span", { staticClass: "caret" })
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            !user.isAdmin
-              ? _c("ul", { staticClass: "dropdown-menu" }, [
-                  _vm._m(0, true),
-                  _vm._v(" "),
-                  _vm._m(1, true)
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            user.isAdmin
-              ? _c("span", { style: { color: user.color } }, [
-                  _vm._v("\n            " + _vm._s(user.name) + "\n        ")
-                ])
-              : _vm._e()
-          ])
-        : _vm._l(_vm.users, function(user) {
-            return _c("li", { staticClass: "user-list__item" }, [
-              _c("span", { style: { color: user.color } }, [
-                _vm._v("\n            " + _vm._s(user.name) + "\n       ")
-              ])
+      return _c("li", { staticClass: "user-list__item dropdown" }, [
+        !user.isAdmin && _vm.isAdmin
+          ? _c(
+              "a",
+              {
+                staticClass: "dropdown-toggle",
+                style: { color: user.color },
+                attrs: {
+                  href: "#",
+                  "data-toggle": "dropdown",
+                  role: "button",
+                  "aria-expanded": "false",
+                  "aria-haspopup": "true"
+                }
+              },
+              [
+                _vm._v("\n\n            " + _vm._s(user.name) + " "),
+                _c("span", { staticClass: "caret" })
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        !user.isAdmin && _vm.isAdmin
+          ? _c("ul", { staticClass: "dropdown-menu" }, [
+              _vm._m(0, true),
+              _vm._v(" "),
+              _vm._m(1, true)
             ])
-          })
+          : _vm._e(),
+        _vm._v(" "),
+        user.isAdmin || !_vm.isAdmin
+          ? _c("span", { style: { color: user.color } }, [
+              _vm._v("\n\n            " + _vm._s(user.name) + "\n        ")
+            ])
+          : _vm._e()
+      ])
     })
   )
 }

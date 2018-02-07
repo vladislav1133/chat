@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+
 
 class RolesTableSeeder extends Seeder
 {
@@ -13,29 +12,20 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        app()['cache']->forget('spatie.permission.cache');
+//        app()['cache']->forget('spatie.permission.cache');
+//
+//        config(['permission.cache_expiration_time' => '0']);
+//
+//        Permission::create(['name' => 'visit-page']);
+//        Permission::create(['name' => 'write-message']);
+//        Permission::create(['name' => 'ban-user']);
+//        Permission::create(['name' => 'mute-user']);
+//
+//
+//        $admin = Role::create(['name' => 'admin']);
 
-        config(['permission.cache_expiration_time' => '0']);
-
-        Permission::create(['name' => 'ban user']);
-        Permission::create(['name' => 'mute user']);
-
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo('ban user');
-        $adminRole->givePermissionTo('mute user');
-
-        Permission::create(['name' => 'can watch']);
-        Permission::create(['name' => 'can write']);
-
-        $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo('can write');
-        $userRole->givePermissionTo('can watch');
-
-        $watcherRole = Role::create(['name' => 'watcher']);
-        $watcherRole->givePermissionTo('can watch');
-
-        $blockedUser = Role::create(['name' => 'blockedUser']);
-
+     //   $admin->givePermissionTo('ban-user');
+      //  $admin->givePermissionTo('mute-user');
 
     }
 }

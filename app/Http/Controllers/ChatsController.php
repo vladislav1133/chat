@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Http\Requests\MessageRequest;
 use App\Message;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 use App\Services\ChatService;
+
 
 class ChatsController extends Controller
 {
@@ -17,7 +16,8 @@ class ChatsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
+       // $this->middleware('role:admin');
+        //$this->middleware('permission:can visit');
     }
 
     /**
@@ -28,6 +28,11 @@ class ChatsController extends Controller
     public function index()
     {
 
+        $user = Auth::user();
+
+        //$user->hasPermissionTo('visit page');
+        dump($user->getRoleNames());
+        $user->givePermissionTo('visit-page','web');
         return view('chat');
     }
 
