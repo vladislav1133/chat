@@ -8,7 +8,7 @@ use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ChatService;
-
+use JavaScript;
 
 class ChatsController extends Controller
 {
@@ -26,8 +26,11 @@ class ChatsController extends Controller
     public function index()
     {
 
+        $v = JavaScript::put([
+            'user' => Auth::user()
+        ]);
 
-        $user = Auth::user();
+      //  dump($v);
 
 
         return view('chat');

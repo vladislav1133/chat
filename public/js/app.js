@@ -1081,108 +1081,116 @@ module.exports = __webpack_require__(51);
 
 __webpack_require__(12);
 
-Vue.component('chat-messages', __webpack_require__(39));
-Vue.component('chat-form', __webpack_require__(42));
-Vue.component('chat-users', __webpack_require__(45));
-Vue.component('chat-notification', __webpack_require__(48));
+if (document.getElementById("root")) {
+    Vue.component('chat-messages', __webpack_require__(39));
+    Vue.component('chat-form', __webpack_require__(42));
+    Vue.component('chat-users', __webpack_require__(45));
+    Vue.component('chat-notification', __webpack_require__(48));
 
-var app = new Vue({
-    el: '#app',
+    var app = new Vue({
+        el: '#root',
 
-    props: ['userId'],
+        data: function data() {
 
-    data: function data() {
+            return {
+                messages: [],
+                success: null,
+                error: null,
+                user: user,
+                mute: null
+            };
+        },
+        created: function created() {
+            var _this = this;
 
-        return {
-            messages: [],
-            success: null,
-            error: null
-        };
-    },
-    created: function created() {
-        var _this = this;
+            this.fetchMessages();
 
-        this.fetchMessages();
+            Echo.private('chat').listen('MessageSent', function (e) {
 
-        console.log('www');
-        Echo.private('chat').listen('MessageSent', function (e) {
-            _this.messages.push({
-                message: e.message.message,
-                user: e.user
-            });
-        }).listen('BanUser', function (e) {
-            console.log('WORK LISTEN BAN');
-            //window.location.href = "/ban";
-        });
-    },
+                _this.messages.push({
+                    message: e.message.message,
+                    user: e.user
+                });
+            }).listen('UserManage', function (e) {
+                if (_this.user.id === e.user.id && e.action === 'ban') {
+                    window.location.href = "/ban";
+                }
 
-
-    methods: {
-        banUser: function banUser(userId) {
-            var _this2 = this;
-
-            axios.get('/admin/user/ban/' + userId).then(function (response) {
-                console.log(response);
-
-                if (response.data.banned === true) _this2.showNotification(response.data.message, 5000);
-            }).catch(function (error) {
-
-                var message = error.response.data.errors.message[0];
-                _this2.showNotification(message, 5000, false);
+                if (_this.user.id === e.user.id && e.action === 'mute') {
+                    _this.showNotification('You are muted', 5000);
+                    _this.mute = true;
+                }
             });
         },
-        muteUser: function muteUser(userId) {
-            var _this3 = this;
-
-            axios.get('/admin/user/mute/' + userId).then(function (response) {
-
-                if (response.data.muted === true) _this3.showNotification(response.data.message, 5000);
-            }).catch(function (error) {
-
-                var message = error.response.data.errors.message[0];
-                _this3.showNotification(message, 5000, false);
-            });
-        },
-        fetchMessages: function fetchMessages() {
-            var _this4 = this;
-
-            axios.get('/messages').then(function (response) {
-                _this4.messages = response.data;
-            });
-        },
-        showNotification: function showNotification(text, time) {
-            var _this5 = this;
-
-            var success = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
 
-            if (success) {
-                this.success = text;
-                setTimeout(function () {
-                    _this5.success = null;
-                }, time);
-            } else {
-                this.error = text;
-                setTimeout(function () {
-                    _this5.error = null;
-                }, time);
+        methods: {
+            banUser: function banUser(userId) {
+                var _this2 = this;
+
+                axios.get('/admin/user/ban/' + userId).then(function (response) {
+                    console.log(response);
+
+                    if (response.data.banned === true) _this2.showNotification(response.data.message, 5000);
+                }).catch(function (error) {
+
+                    var message = error.response.data.errors.message[0];
+                    _this2.showNotification(message, 5000, false);
+                });
+            },
+            muteUser: function muteUser(userId) {
+                var _this3 = this;
+
+                axios.get('/admin/user/mute/' + userId).then(function (response) {
+
+                    if (response.data.muted === true) _this3.showNotification(response.data.message, 5000);
+                }).catch(function (error) {
+
+                    var message = error.response.data.errors.message[0];
+                    _this3.showNotification(message, 5000, false);
+                });
+            },
+            fetchMessages: function fetchMessages() {
+                var _this4 = this;
+
+                axios.get('/messages').then(function (response) {
+                    _this4.messages = response.data;
+                });
+            },
+            showNotification: function showNotification(text, time) {
+                var _this5 = this;
+
+                var success = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+
+                if (success) {
+                    this.success = text;
+                    setTimeout(function () {
+                        _this5.success = null;
+                    }, time);
+                } else {
+                    this.error = text;
+                    setTimeout(function () {
+                        _this5.error = null;
+                    }, time);
+                }
+            },
+            addMessage: function addMessage(message) {
+                var _this6 = this;
+
+                axios.post('/messages', message).then(function (response) {
+                    console.log(response);
+
+                    if (response.data.message === 'saved') _this6.messages.push(message);
+                }).catch(function (error) {
+
+                    var message = error.response.data.errors.message[0];
+                    _this6.showNotification(message, 5000, false);
+                });
             }
-        },
-        addMessage: function addMessage(message) {
-            var _this6 = this;
-
-            axios.post('/messages', message).then(function (response) {
-                console.log(response);
-
-                if (response.data.message === 'saved') _this6.messages.push(message);
-            }).catch(function (error) {
-
-                var message = error.response.data.errors.message[0];
-                _this6.showNotification(message, 5000, false);
-            });
         }
-    }
-});
+    });
+}
 
 /***/ }),
 /* 12 */
@@ -31147,9 +31155,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['user'],
+    props: ['user', 'mute'],
 
     data: function data() {
         return {
@@ -31193,7 +31202,8 @@ var render = function() {
         type: "text",
         id: "btn-input",
         name: "message",
-        placeholder: "Type your message"
+        placeholder: "Type your message",
+        disabled: _vm.mute
       },
       domProps: { value: _vm.newMessage },
       on: {

@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Silber\Bouncer\BouncerServiceProvider::class,
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
     ],
 
     /*

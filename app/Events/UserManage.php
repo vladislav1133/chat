@@ -9,19 +9,36 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\User;
 
-class BanUser implements ShouldBroadcast
+class UserManage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * User that sent the message
      *
-     * @return void
+     * @var
      */
-    public function __construct()
+    public $user;
+
+    /**
+     * Action for the user
+     *
+     * @var
+     */
+    public $action;
+
+
+    /**
+     * UserManage constructor.
+     * @param User $user
+     * @param string $action
+     */
+    public function __construct(User $user, string $action)
     {
-        //
+        $this->user = $user;
+        $this->action = $action;
     }
 
     /**

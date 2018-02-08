@@ -63,6 +63,8 @@
 
             },
 
+
+
             banUser(id) {
                 this.$emit('ban-user', id)
             },

@@ -8,6 +8,7 @@
                 placeholder="Type your message"
                 v-model="newMessage"
                 @keyup.enter="sendMessage"
+                :disabled="mute"
         >
 
         <span class="input-group-btn">
@@ -22,7 +23,7 @@
 
 <script>
     export default {
-        props: ['user'],
+        props: ['user', 'mute'],
 
         data() {
             return {
