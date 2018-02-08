@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+
 class VisitorMiddleware
 {
     /**
@@ -15,10 +16,10 @@ class VisitorMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
+        $user = $request->user();
 
-        if ($user->hasRole('admin') || $user->hasPermissionTo('visit page'))  return $next($request);
+        if ($user->cannot('visit-page')) return redirect('/ban');
 
-        return redirect('/login');
+        return $next($request);
     }
 }

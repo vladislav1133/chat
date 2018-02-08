@@ -12,20 +12,14 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-//        app()['cache']->forget('spatie.permission.cache');
-//
-//        config(['permission.cache_expiration_time' => '0']);
-//
-//        Permission::create(['name' => 'visit-page']);
-//        Permission::create(['name' => 'write-message']);
-//        Permission::create(['name' => 'ban-user']);
-//        Permission::create(['name' => 'mute-user']);
-//
-//
-//        $admin = Role::create(['name' => 'admin']);
 
-     //   $admin->givePermissionTo('ban-user');
-      //  $admin->givePermissionTo('mute-user');
+        Bouncer::ability()->create(['name' => 'visit-page', 'title' => 'Visit page']);
+        Bouncer::ability()->create(['name' => 'write-message', 'title' => 'Write message']);
+
+        Bouncer::role()->create(['name' => 'admin', 'title' => 'Administrator']);
+
+        Bouncer::allow('admin')->everything();
+
 
     }
 }

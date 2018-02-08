@@ -22,6 +22,6 @@ class UsersTableSeeder extends Seeder
             'color' => ColorGenerateService::getHex()
         ]);
 
-        $user->assignRole('admin');
+        $user->assign('admin');
     }
 }

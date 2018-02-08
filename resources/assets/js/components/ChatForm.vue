@@ -32,7 +32,7 @@
 
         methods: {
             sendMessage() {
-                this.$emit('messagesent', {
+                this.$emit('message-sent', {
                     user: this.user,
                     message: this.newMessage
                 })

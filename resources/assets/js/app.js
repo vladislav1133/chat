@@ -8,6 +8,8 @@ Vue.component('chat-notification', require('./components/ChatNotification.vue'))
 const app = new Vue({
     el: '#app',
 
+    props: ['userId'],
+
     data(){
 
        return {
@@ -22,16 +24,52 @@ const app = new Vue({
     created() {
         this.fetchMessages()
 
+        console.log('www')
         Echo.private('chat')
+
             .listen('MessageSent', (e) => {
                 this.messages.push({
                     message: e.message.message,
                     user: e.user
                 })
             })
+            .listen('BanUser', (e) => {
+                console.log('WORK LISTEN BAN')
+                //window.location.href = "/ban";
+            })
+
     },
 
     methods: {
+
+        banUser(userId) {
+            axios.get(`/admin/user/ban/${userId}`)
+                .then(response => {
+                        console.log(response)
+
+                        if (response.data.banned === true) this.showNotification(response.data.message ,5000)
+
+                    })
+                .catch(error => {
+
+                    let message = error.response.data.errors.message[0]
+                    this.showNotification(message,5000,false)
+                })
+        },
+
+        muteUser(userId) {
+            axios.get(`/admin/user/mute/${userId}`)
+                .then(response => {
+
+                    if (response.data.muted === true)  this.showNotification(response.data.message ,5000)
+
+                })
+                .catch(error => {
+
+                    let message = error.response.data.errors.message[0]
+                    this.showNotification(message,5000,false)
+                })
+        },
 
         fetchMessages() {
             axios.get('/messages').then(response => {
@@ -56,16 +94,19 @@ const app = new Vue({
         },
         addMessage(message){
 
-            axios.post('/messages', message).then(response => {
+            axios.post('/messages', message)
+                .then(
+                    (response) => {
+                    console.log(response)
 
-                console.log(response)
+                    if (response.data.message === 'saved') this.messages.push(message)
 
-                if (response.data.status === 200) this.messages.push(message)
-                else {
-                    console.log(response.data.error)
-                    this.showNotification(response.data.error,5000,false)
-                }
-            })
+                })
+                .catch(error => {
+
+                    let message = error.response.data.errors.message[0]
+                    this.showNotification(message,5000,false)
+                })
         }
     }
 });

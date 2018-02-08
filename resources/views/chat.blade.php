@@ -13,7 +13,7 @@
                     </div>
                     <div class="panel-footer">
                         <chat-form
-                                @messagesent="addMessage"
+                                @message-sent="addMessage"
                                 :user="{{ Auth::user() }}"
                         ></chat-form>
                     </div>
@@ -25,7 +25,9 @@
 
                     <div class="panel-body">
                        <chat-users
-                               {{Auth::user()->hasRole('admin')? ':is-admin="true"' : '' }}
+                               @ban-user="banUser"
+                               @mute-user="muteUser"
+                               {{Auth::user()->isAn('admin')? ':is-admin="true"' : '' }}
                                :user="{{ Auth::user() }}"
                        ></chat-users>
                     </div>

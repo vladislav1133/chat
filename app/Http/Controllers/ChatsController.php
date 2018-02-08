@@ -15,9 +15,7 @@ class ChatsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
-       // $this->middleware('role:admin');
-        //$this->middleware('permission:can visit');
+
     }
 
     /**
@@ -28,11 +26,10 @@ class ChatsController extends Controller
     public function index()
     {
 
+
         $user = Auth::user();
 
-        //$user->hasPermissionTo('visit page');
-        dump($user->getRoleNames());
-        $user->givePermissionTo('visit-page','web');
+
         return view('chat');
     }
 
@@ -51,7 +48,7 @@ class ChatsController extends Controller
     /**
      * Save message to database
      *
-     * @param Request $request
+     * @param MessageRequest $request
      * @return array
      */
     public function sendMessage(MessageRequest $request)
@@ -63,8 +60,7 @@ class ChatsController extends Controller
 
         broadcast(new MessageSent($user, $message))->toOthers();
 
-        return response()->json(['status' => 200]);
+        return response()->json(['message' => 'saved']);
     }
-
 
 }

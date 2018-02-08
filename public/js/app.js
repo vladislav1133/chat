@@ -1089,6 +1089,8 @@ Vue.component('chat-notification', __webpack_require__(48));
 var app = new Vue({
     el: '#app',
 
+    props: ['userId'],
+
     data: function data() {
 
         return {
@@ -1102,25 +1104,54 @@ var app = new Vue({
 
         this.fetchMessages();
 
+        console.log('www');
         Echo.private('chat').listen('MessageSent', function (e) {
             _this.messages.push({
                 message: e.message.message,
                 user: e.user
             });
+        }).listen('BanUser', function (e) {
+            console.log('WORK LISTEN BAN');
+            //window.location.href = "/ban";
         });
     },
 
 
     methods: {
-        fetchMessages: function fetchMessages() {
+        banUser: function banUser(userId) {
             var _this2 = this;
 
+            axios.get('/admin/user/ban/' + userId).then(function (response) {
+                console.log(response);
+
+                if (response.data.banned === true) _this2.showNotification(response.data.message, 5000);
+            }).catch(function (error) {
+
+                var message = error.response.data.errors.message[0];
+                _this2.showNotification(message, 5000, false);
+            });
+        },
+        muteUser: function muteUser(userId) {
+            var _this3 = this;
+
+            axios.get('/admin/user/mute/' + userId).then(function (response) {
+
+                if (response.data.muted === true) _this3.showNotification(response.data.message, 5000);
+            }).catch(function (error) {
+
+                var message = error.response.data.errors.message[0];
+                _this3.showNotification(message, 5000, false);
+            });
+        },
+        fetchMessages: function fetchMessages() {
+            var _this4 = this;
+
             axios.get('/messages').then(function (response) {
-                _this2.messages = response.data;
+                _this4.messages = response.data;
             });
         },
         showNotification: function showNotification(text, time) {
-            var _this3 = this;
+            var _this5 = this;
 
             var success = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -1128,26 +1159,26 @@ var app = new Vue({
             if (success) {
                 this.success = text;
                 setTimeout(function () {
-                    _this3.success = null;
+                    _this5.success = null;
                 }, time);
             } else {
                 this.error = text;
                 setTimeout(function () {
-                    _this3.error = null;
+                    _this5.error = null;
                 }, time);
             }
         },
         addMessage: function addMessage(message) {
-            var _this4 = this;
+            var _this6 = this;
 
             axios.post('/messages', message).then(function (response) {
-
                 console.log(response);
 
-                if (response.data.status === 200) _this4.messages.push(message);else {
-                    console.log(response.data.error);
-                    _this4.showNotification(response.data.error, 5000, false);
-                }
+                if (response.data.message === 'saved') _this6.messages.push(message);
+            }).catch(function (error) {
+
+                var message = error.response.data.errors.message[0];
+                _this6.showNotification(message, 5000, false);
             });
         }
     }
@@ -31129,7 +31160,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         sendMessage: function sendMessage() {
-            this.$emit('messagesent', {
+            this.$emit('message-sent', {
                 user: this.user,
                 message: this.newMessage
             });
@@ -31326,6 +31357,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return _this.removeUserById(user.id);
             });
         },
+        banUser: function banUser(id) {
+            this.$emit('ban-user', id);
+        },
+        muteUser: function muteUser(id) {
+            this.$emit('mute-user', id);
+        },
         removeUserById: function removeUserById(id) {
             var removeIndex = this.users.map(function (item) {
                 return item.id;
@@ -31372,9 +31409,33 @@ var render = function() {
         _vm._v(" "),
         !user.isAdmin && _vm.isAdmin
           ? _c("ul", { staticClass: "dropdown-menu" }, [
-              _vm._m(0, true),
+              _c("li", [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.muteUser(user.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Mute user")]
+                )
+              ]),
               _vm._v(" "),
-              _vm._m(1, true)
+              _c("li", [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        _vm.banUser(user.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Ban user")]
+                )
+              ])
             ])
           : _vm._e(),
         _vm._v(" "),
@@ -31387,20 +31448,7 @@ var render = function() {
     })
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Mute user")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Ban user")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

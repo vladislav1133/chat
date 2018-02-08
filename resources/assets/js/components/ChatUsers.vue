@@ -22,8 +22,8 @@
                         class="dropdown-menu"
                         v-if="!user.isAdmin && isAdmin">
 
-                    <li><a href="#">Mute user</a></li>
-                    <li><a href="#">Ban user</a></li>
+                    <li><a @click="muteUser(user.id)">Mute user</a></li>
+                    <li><a @click="banUser(user.id)" >Ban user</a></li>
                 </ul>
                 <span
                         :style={color:user.color}
@@ -62,6 +62,16 @@
                     .leaving(user => this.removeUserById(user.id));
 
             },
+
+            banUser(id) {
+                this.$emit('ban-user', id)
+            },
+
+            muteUser(id) {
+                this.$emit('mute-user', id)
+            },
+
+
 
             removeUserById(id){
                 let removeIndex = this.users.map(function(item) { return item.id; }).indexOf(id);

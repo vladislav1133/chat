@@ -7,6 +7,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Bouncer;
 
 class RegisterController extends Controller
 {
@@ -70,8 +71,8 @@ class RegisterController extends Controller
             'color' => ColorGenerateService::getHex()
         ]);
 
-       // $user->givePermissionTo('visit page');
-       // $user->givePermissionTo('write message');
+         $user->allow('visit-page');
+         $user->allow('write-message');
 
         return $user;
     }

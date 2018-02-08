@@ -11,15 +11,15 @@
 |
 */
 
-Broadcast::channel('chat', function ($user) {
+Broadcast::channel('chat', function () {
 
-
-    return Auth::check();
+    if(Auth::check()) return Auth::user();
 });
 
 Broadcast::channel('userList', function ($user) {
 
-    $user->role = $user->getRoleNames();
-    $user->isAdmin = $user->hasRole('admin');
+
+    $user->isAdmin = $user->isAn('admin');
     return $user;
 });
+

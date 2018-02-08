@@ -15,8 +15,20 @@
 
 Auth::routes();
 
-Route::get('/', 'ChatsController@index');
-Route::get('messages', 'ChatsController@fetchMessages');
-Route::post('messages', 'ChatsController@sendMessage');
+Route::group(['middleware' => ['auth','visitor']], function () {
 
+    Route::get('/', 'ChatsController@index');
+    Route::get('messages', 'ChatsController@fetchMessages');
+    Route::post('messages', 'ChatsController@sendMessage');
+
+});
+
+Route::group(['middleware' => ['auth','admin']], function () {
+
+    Route::get('admin/user/ban/{id}', 'Admin\ChatsController@banUser');
+    Route::get('admin/user/mute/{id}', 'Admin\ChatsController@muteUser');
+
+});
+
+Route::get('/ban', function (){return view('ban');});
 
