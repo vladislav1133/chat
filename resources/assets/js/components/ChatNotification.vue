@@ -11,7 +11,12 @@
 </template>
 
 <script>
+    import VueTypes from 'vue-types';
+
     export default {
-        props: ['error', 'success']
+        props: {
+            error: VueTypes.string,
+            success: VueTypes.string
+        },
     }
 </script>

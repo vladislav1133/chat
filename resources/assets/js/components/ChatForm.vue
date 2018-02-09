@@ -8,7 +8,7 @@
                 placeholder="Type your message"
                 v-model="newMessage"
                 @keyup.enter="sendMessage"
-                :disabled="mute"
+
         >
 
         <span class="input-group-btn">
@@ -16,14 +16,22 @@
                     class="bth btn-primary btn-sm"
                     id="btn-chat"
                     @click="sendMessage"
-            >Send</button>
+            >
+                Send
+            </button>
         </span>
     </div>
 </template>
 
 <script>
+    import VueTypes from 'vue-types';
+
     export default {
-        props: ['user', 'mute'],
+
+        props: {
+            user: VueTypes.object.isRequired,
+        },
+
 
         data() {
             return {
@@ -32,6 +40,7 @@
         },
 
         methods: {
+
             sendMessage() {
                 this.$emit('message-sent', {
                     user: this.user,

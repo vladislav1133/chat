@@ -14,21 +14,23 @@
                    aria-haspopup="true"
 
                    :style={color:user.color}
-                   v-if="!user.isAdmin && isAdmin">
-
+                   v-if="checkAdmin(user)"
+                >
                     {{ user.name }} <span class="caret"></span>
                 </a>
                 <ul
                         class="dropdown-menu"
-                        v-if="!user.isAdmin && isAdmin">
-
-                    <li><a @click="muteUser(user.id)">Mute user</a></li>
+                        v-if="checkAdmin(user)"
+                >
+                    <li><a @click="muteUser(user.id)" >Mute user</a></li>
                     <li><a @click="banUser(user.id)" >Ban user</a></li>
                 </ul>
+
+
                 <span
                         :style={color:user.color}
-                        v-if="user.isAdmin || !isAdmin">
-
+                        v-if="!checkAdmin(user)"
+                >
                     {{ user.name }}
                 </span>
 
@@ -38,8 +40,18 @@
 </template>
 
 <script>
+
+    import VueTypes from 'vue-types';
+
     export default {
-        props: ['isAdmin','user'],
+
+        props: {
+            user: VueTypes.shape({
+                name: VueTypes.string.isRequired,
+                color: VueTypes.string.isRequired,
+                isAdmin: VueTypes.bool.isRequired
+            }).isRequired.loose,
+        },
 
         data() {
             return {
@@ -52,6 +64,11 @@
         },
 
         methods: {
+            checkAdmin(chatUser) {
+
+                return this.user.isAdmin && chatUser.name !== user.name
+            },
+
             listenUsers() {
                 Echo.join('userList')
                     .here(users => this.users = users)
@@ -66,11 +83,11 @@
 
 
             banUser(id) {
-                this.$emit('ban-user', id)
+                this.$emit('ban-user', id, 'ban')
             },
 
             muteUser(id) {
-                this.$emit('mute-user', id)
+                this.$emit('mute-user', id, 'mute')
             },
 
 

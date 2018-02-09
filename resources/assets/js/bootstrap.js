@@ -2,8 +2,10 @@ import axios from 'axios'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import Vue from 'vue'
+import jQuery from 'jquery'
 
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = jQuery
+
 require('bootstrap-sass');
 
 window.Vue = Vue

@@ -16,8 +16,16 @@
 </template>
 
 <script>
+    import VueTypes from 'vue-types';
+
     export default {
-        props: ['messages'],
+       // props: ['messages'],
+
+        props: {
+
+          messages: VueTypes.array.isRequired,
+
+        },
 
         updated() {
             this.scrollToEnd()

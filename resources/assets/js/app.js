@@ -1,13 +1,13 @@
 require('./bootstrap')
 
-if(document.getElementById("root")){
+if(document.getElementById("chat")){
     Vue.component('chat-messages', require('./components/ChatMessages.vue'))
     Vue.component('chat-form', require('./components/ChatForm.vue'))
     Vue.component('chat-users', require('./components/ChatUsers.vue'))
     Vue.component('chat-notification', require('./components/ChatNotification.vue'))
 
     const app = new Vue({
-        el: '#root',
+        el: '#chat',
 
         data(){
 
@@ -16,60 +16,57 @@ if(document.getElementById("root")){
                 success: null,
                 error: null,
                 user: user,
-                mute: null
+
             }
         },
 
         created() {
             this.fetchMessages()
 
-            Echo.private('chat')
-                .listen('MessageSent', (e) => {
+        },
 
-                    this.messages.push({
-                        message: e.message.message,
-                        user: e.user
-                    })
-                })
-                .listen('UserManage', (e) => {
-                    if(this.user.id === e.user.id && e.action === 'ban'){
-                        window.location.href = "/ban";
-                    }
-
-                    if(this.user.id === e.user.id && e.action === 'mute'){
-                        this.showNotification('You are muted' ,5000)
-                        this.mute = true
-                    }
-                })
-
+        mounted() {
+            this.listenChat()
+            this.listenUser()
         },
 
         methods: {
-            banUser(userId) {
-                axios.get(`/admin/user/ban/${userId}`)
-                    .then(response => {
-                        console.log(response)
 
-                        if (response.data.banned === true) this.showNotification(response.data.message ,5000)
+            listenChat() {
+                Echo.private('chat')
+                    .listen('MessageSent', (e) => {
 
-                    })
-                    .catch(error => {
-
-                        let message = error.response.data.errors.message[0]
-                        this.showNotification(message,5000,false)
+                        this.messages.push({
+                            message: e.message.message,
+                            user: e.user
+                        })
                     })
             },
 
-            muteUser(userId) {
-                axios.get(`/admin/user/mute/${userId}`)
-                    .then(response => {
+            listenUser() {
+                Echo.private(`user.${this.user.id}`)
+                    .listen('UserManage', (e) => {
+                        if(this.user.id === e.user.id && e.action === 'ban'){
+                            window.location.href = "/ban";
+                        }
 
-                        if (response.data.muted === true)  this.showNotification(response.data.message ,5000)
+                        if(this.user.id === e.user.id && e.action === 'mute'){
+                            this.showNotification('You are muted' ,5000, true)
+
+                        }
+                    })
+            },
+
+            manageUser(userId,action) {
+
+                axios.get(`/admin/user/${action}/${userId}`)
+                    .then(response => {
 
                     })
                     .catch(error => {
 
                         let message = error.response.data.errors.message[0]
+
                         this.showNotification(message,5000,false)
                     })
             },
@@ -78,6 +75,22 @@ if(document.getElementById("root")){
                 axios.get('/messages').then(response => {
                     this.messages = response.data
                 })
+            },
+
+            addMessage(message){
+
+                axios.post('/messages', message)
+                    .then(
+                        (response) => {
+
+                            if (response.data.message === 'saved') this.messages.push(message)
+                        })
+                    .catch(error => {
+
+                        let message = error.response.data.errors.message[0]
+
+                        this.showNotification(message,5000,false)
+                    })
             },
 
             showNotification(text, time, success = true) {
@@ -96,22 +109,7 @@ if(document.getElementById("root")){
                 }
             },
 
-            addMessage(message){
 
-                axios.post('/messages', message)
-                    .then(
-                        (response) => {
-                            console.log(response)
-
-                            if (response.data.message === 'saved') this.messages.push(message)
-
-                        })
-                    .catch(error => {
-
-                        let message = error.response.data.errors.message[0]
-                        this.showNotification(message,5000,false)
-                    })
-            }
         }
     });
 

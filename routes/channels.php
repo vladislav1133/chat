@@ -13,13 +13,15 @@
 
 Broadcast::channel('chat', function () {
 
-    if(Auth::check()) return Auth::user();
+     return Auth::check();
 });
 
 Broadcast::channel('userList', function ($user) {
 
-
-    $user->isAdmin = $user->isAn('admin');
-    return $user;
+    return $user->chatProfile;
 });
 
+
+Broadcast::channel('user.{id}', function ($user, $id){
+    return $user->id === (int) $id;
+});

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Http\Requests\MessageRequest;
 use App\Message;
+use App\Repositories\Contracts\MessageRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ChatService;
@@ -13,9 +14,15 @@ use JavaScript;
 class ChatsController extends Controller
 {
 
-    public function __construct()
-    {
+    private $messageRepository;
 
+    public function __construct(MessageRepositoryInterface $messageRepository)
+    {
+        $this->middleware('auth');
+        $this->middleware('visitor');
+        $this->middleware('writer')->only('sendMessage');
+
+        $this->messageRepository = $messageRepository;
     }
 
     /**
@@ -25,13 +32,8 @@ class ChatsController extends Controller
      */
     public function index()
     {
-
-        $v = JavaScript::put([
-            'user' => Auth::user()
-        ]);
-
-      //  dump($v);
-
+       // dd(Auth::user()->id);
+        JavaScript::put(['user' => Auth::user()->chatProfile]);
 
         return view('chat');
     }
@@ -44,8 +46,7 @@ class ChatsController extends Controller
     public function fetchMessages()
     {
 
-
-        return Message::with('user')->get();
+        return $this->messageRepository->getAllWith('user');
     }
 
     /**
@@ -56,10 +57,9 @@ class ChatsController extends Controller
      */
     public function sendMessage(MessageRequest $request)
     {
-
         $user = Auth::user();
 
-        $message = ChatService::save($request,$user);
+        $message = $this->messageRepository->createByUser($request['message'], $user);
 
         broadcast(new MessageSent($user, $message))->toOthers();
 

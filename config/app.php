@@ -179,6 +179,9 @@ return [
 
         Silber\Bouncer\BouncerServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
+
+        App\Providers\ChatServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
     ],
 
     /*

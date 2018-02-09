@@ -48,6 +48,6 @@ class UserManage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat');
+        return new PrivateChannel('user.'.$this->user->id);
     }
 }

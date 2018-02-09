@@ -37,4 +37,20 @@ class User extends Authenticatable
 
         return $this->hasMany(Message::class);
     }
+
+    /**
+     * Return user chat profile
+     * @return array
+     */
+    public function getChatProfileAttribute()
+    {
+        return [
+            'id' => $this->id,
+            'color' => $this->color,
+            'name' => $this->name,
+            'isAdmin' => $this->isAn('admin')
+        ];
+
+          //  "{$this->first_name} {$this->last_name}";
+    }
 }
