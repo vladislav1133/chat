@@ -1,5 +1,5 @@
-# Chat
-Realtime chat
+# Laravel Chat
+Realtime chat with administrator 
 ## Getting Started
 
 Clone the project
@@ -22,7 +22,7 @@ DB_USERNAME=
 DB_PASSWORD=
 ```
 
-### Database Migrations
+## Database Migrations
 
 Create and feel your tables
 
@@ -30,4 +30,10 @@ Create and feel your tables
 ```bash
 php artisan migrate
 ```
-Open your server
+
+##Finish
+####Sign in with administrator account:
+
+email: admin@chat.test
+
+password: 12345678
