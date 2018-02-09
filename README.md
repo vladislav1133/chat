@@ -8,6 +8,7 @@ After cloning, run:
 
 ```bash
 composer install
+yarn/npm install
 ```
 Duplicate `.env.example` and rename it `.env`
 
@@ -22,13 +23,13 @@ DB_USERNAME=
 DB_PASSWORD=
 ```
 
-## Database Migrations
+## Database Migrations and seed
 
 Create and feel your tables
 
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ##Finish
