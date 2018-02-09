@@ -13,10 +13,9 @@ if(document.getElementById("chat")){
 
             return {
                 messages: [],
-                success: null,
-                error: null,
+                success: '',
+                error: '',
                 user: user,
-
             }
         },
 
@@ -46,12 +45,15 @@ if(document.getElementById("chat")){
             listenUser() {
                 Echo.private(`user.${this.user.id}`)
                     .listen('UserManage', (e) => {
+
                         if(this.user.id === e.user.id && e.action === 'ban'){
+
                             window.location.href = "/ban";
                         }
 
                         if(this.user.id === e.user.id && e.action === 'mute'){
-                            this.showNotification('You are muted' ,5000, true)
+
+                            this.showNotification('You are muted' ,5000, false)
 
                         }
                     })
@@ -95,21 +97,24 @@ if(document.getElementById("chat")){
 
             showNotification(text, time, success = true) {
 
-                if(success){
-                    this.success = text
-                    setTimeout(() => {
-                        this.success = null
-                    },time)
+                if (success){
+                    if( this.success === ''){
+                        this.success = text
 
+                        setTimeout(() => {
+                            this.success = ''
+                        },time)
+                    }
                 } else {
-                    this.error = text
-                    setTimeout(() => {
-                        this.error = null
-                    },time)
+                    if(this.error === ''){
+                        this.error = text
+
+                        setTimeout(() => {
+                            this.error = ''
+                        },time)
+                    }
                 }
             },
-
-
         }
     });
 

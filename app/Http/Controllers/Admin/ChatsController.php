@@ -21,6 +21,12 @@ class ChatsController extends Controller
         $this->chatManageService = $chatManageService;
     }
 
+    /**
+     * Mute specified User
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function muteUser($id) {
 
         $user = User::findOrFail($id);
@@ -32,6 +38,12 @@ class ChatsController extends Controller
         return response()->json(['muted' => true, 'message' => 'The user is muted']);
     }
 
+    /**
+     * Ban specified User
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function banUser($id) {
 
         $user = User::findOrFail($id);

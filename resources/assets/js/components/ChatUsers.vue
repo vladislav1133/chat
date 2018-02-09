@@ -1,7 +1,5 @@
 <template>
-
         <ul class="user-list">
-
             <li
                     class="user-list__item dropdown"
                     v-for="user in users">
@@ -18,6 +16,7 @@
                 >
                     {{ user.name }} <span class="caret"></span>
                 </a>
+
                 <ul
                         class="dropdown-menu"
                         v-if="checkAdmin(user)"
@@ -26,16 +25,13 @@
                     <li><a @click="banUser(user.id)" >Ban user</a></li>
                 </ul>
 
-
                 <span
                         :style={color:user.color}
                         v-if="!checkAdmin(user)"
                 >
                     {{ user.name }}
                 </span>
-
             </li>
-
         </ul>
 </template>
 
@@ -80,8 +76,6 @@
 
             },
 
-
-
             banUser(id) {
                 this.$emit('ban-user', id, 'ban')
             },
@@ -89,8 +83,6 @@
             muteUser(id) {
                 this.$emit('mute-user', id, 'mute')
             },
-
-
 
             removeUserById(id){
                 let removeIndex = this.users.map(function(item) { return item.id; }).indexOf(id);

@@ -23,5 +23,6 @@ Broadcast::channel('userList', function ($user) {
 
 
 Broadcast::channel('user.{id}', function ($user, $id){
+
     return $user->id === (int) $id;
 });

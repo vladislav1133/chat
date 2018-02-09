@@ -8,10 +8,11 @@ use App\User;
 class ChatManageService implements ChatManageServiceInterface
 {
 
+
     public function removePermission(User $user, $permission)
     {
         $user->disallow($permission);
 
-       return true;
+        return true;
     }
 }

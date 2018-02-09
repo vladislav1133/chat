@@ -40,6 +40,7 @@ class User extends Authenticatable
 
     /**
      * Return user chat profile
+     *
      * @return array
      */
     public function getChatProfileAttribute()
@@ -50,7 +51,5 @@ class User extends Authenticatable
             'name' => $this->name,
             'isAdmin' => $this->isAn('admin')
         ];
-
-          //  "{$this->first_name} {$this->last_name}";
     }
 }

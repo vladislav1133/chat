@@ -32,6 +32,7 @@ class UserManage implements ShouldBroadcast
 
     /**
      * UserManage constructor.
+     *
      * @param User $user
      * @param string $action
      */

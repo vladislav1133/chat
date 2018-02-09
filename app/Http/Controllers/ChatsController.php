@@ -26,13 +26,12 @@ class ChatsController extends Controller
     }
 
     /**
-     *
+     * Show chat page
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-       // dd(Auth::user()->id);
         JavaScript::put(['user' => Auth::user()->chatProfile]);
 
         return view('chat');
@@ -46,7 +45,7 @@ class ChatsController extends Controller
     public function fetchMessages()
     {
 
-        return $this->messageRepository->getAllWith('user');
+        return $this->messageRepository->getAllWith('user:id,color,name');
     }
 
     /**

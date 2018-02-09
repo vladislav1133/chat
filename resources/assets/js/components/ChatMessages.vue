@@ -7,6 +7,7 @@
                         {{ message.user.name }}
                     </strong>
                 </div>
+
                 <p>
                     {{ message.message }}
                 </p>
@@ -19,7 +20,6 @@
     import VueTypes from 'vue-types';
 
     export default {
-       // props: ['messages'],
 
         props: {
 
