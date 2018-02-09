@@ -31,9 +31,7 @@ Create and feel your tables
 ```bash
 php artisan migrate --seed
 ```
-
-##Finish
-####Sign in with administrator account:
+## Sign in with administrator account:
 
 email: admin@chat.test
 
